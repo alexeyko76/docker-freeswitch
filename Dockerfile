@@ -2,6 +2,7 @@ FROM debian:stretch-slim as build
 
 MAINTAINER Alexey Koshkin <alexeyko@gmail.com>
 
+RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # Install Dependencies
@@ -32,7 +33,8 @@ WORKDIR /usr/local/freeswitch
 
 RUN apt-get purge -y g++ \
 && apt-get autoremove -y \
-&& rm -rf conf/* htdocs fonts grammar scripts images log/xml_cdr
+&& apt-get clean \
+&& rm -rf conf/* htdocs fonts grammar scripts images log/xml_cdr \
 && rm -r /var/lib/apt/lists/* \
 && rm -rf /tmp/*
 COPY ./conf/* conf/
