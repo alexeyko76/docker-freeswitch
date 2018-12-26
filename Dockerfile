@@ -39,12 +39,10 @@ RUN apt-get purge -y g++ \
 && rm -rf /tmp/*
 COPY ./conf/* conf/
 
-RUN groupadd -r freeswitch && useradd -r -g freeswitch freeswitch.
-RUN chown -R freeswitch:freeswitch /usr/local/freeswitch
-
 # This results in a single layer image
 FROM debian:stretch-slim
 COPY --from=build /usr/local/freeswitch /usr/local/freeswitch
+RUN groupadd -r freeswitch && useradd -r -g freeswitch freeswitch && chown -R freeswitch:freeswitch /usr/local/freeswitch
 VOLUME ["/usr/local/freeswitch/log","/usr/local/freeswitch/recordings","/usr/local/freeswitch/conf"]
 ENV PATH="/usr/local/freeswitch/bin:${PATH}"
 
