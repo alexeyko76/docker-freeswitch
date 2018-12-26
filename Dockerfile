@@ -32,10 +32,10 @@ WORKDIR /usr/local/freeswitch
 
 RUN apt-get purge -y g++ \
 && apt-get autoremove -y \
-&& rm -rf conf htdocs fonts grammar scripts images log/xml_cdr
+&& rm -rf conf/* htdocs fonts grammar scripts images log/xml_cdr
 && rm -r /var/lib/apt/lists/* \
 && rm -rf /tmp/*
-ADD conf.tar.gz .
+COPY ./conf/* conf/
 
 RUN groupadd -r freeswitch && useradd -r -g freeswitch freeswitch.
 RUN chown -R freeswitch:freeswitch /usr/local/freeswitch
