@@ -8,7 +8,7 @@ RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y -qq install --quiet --no-install-recommends wget git curl ca-certificates pkg-config gnupg
 RUN wget --no-check-certificate -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add -
 RUN echo "deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" > /etc/apt/sources.list.d/freeswitch.list
-RUN apt-get update && apt-get -y -qq install --quiet --no-install-recommends automake autoconf libtool libtool-bin build-essential zlib1g-dev libjpeg-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev libpcre3-dev libspeex-dev libspeexdsp-dev libedit-dev libssl-dev yasm libopus-dev libsndfile-dev libshout3-dev libtiff5-dev libmpg123-dev libmp3lame-dev libvlc-dev libv8fs-6.1-dev
+RUN apt-get update && apt-get -y -qq install --quiet --no-install-recommends automake autoconf libtool libtool-bin build-essential zlib1g-dev libjpeg-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev libpcre3-dev libspeex-dev libspeexdsp-dev libedit-dev libssl-dev yasm libopus-dev libsndfile-dev libshout3-dev libtiff5-dev libmpg123-dev libmp3lame-dev libvlc-dev libv8fs-6.1-dev uuid-dev
 RUN apt-get update
 
 # Download FreeSWITCH
