@@ -12,7 +12,7 @@
 
        WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
   -->
-  <X-PRE-PROCESS cmd="set" data="default_password=ClueCon"/>
+  <X-PRE-PROCESS cmd="set" data="default_password=Barsik88"/>
   <!-- Did you change it yet? -->
   <!--
       The following variables are set dynamically - calculated if possible by freeswitch - and
@@ -51,18 +51,18 @@
   <X-PRE-PROCESS cmd="set" data="external_rtp_ip=stun:stun.freeswitch.org"/>
   <X-PRE-PROCESS cmd="set" data="external_sip_ip=stun:stun.freeswitch.org"/>
 
-  <X-PRE-PROCESS cmd="set" data="event_socket_password=ClueCon"/>
+  <X-PRE-PROCESS cmd="set" data="event_socket_password=Freefree77"/>
   <X-PRE-PROCESS cmd="set" data="event_socket_port=8021"/>
 
   <X-PRE-PROCESS cmd="set" data="internal_auth_calls=true"/>
-  <X-PRE-PROCESS cmd="set" data="internal_sip_port=5060"/>
-  <X-PRE-PROCESS cmd="set" data="internal_tls_port=5061"/>
+  <X-PRE-PROCESS cmd="set" data="internal_sip_port=7060"/>
+  <X-PRE-PROCESS cmd="set" data="internal_tls_port=7061"/>
   <X-PRE-PROCESS cmd="set" data="internal_ssl_enable=false"/>
 
   <X-PRE-PROCESS cmd="set" data="external_auth_calls=false"/>
   <X-PRE-PROCESS cmd="set" data="external_ssl_enable=false"/>
-  <X-PRE-PROCESS cmd="set" data="external_sip_port=5080"/>
-  <X-PRE-PROCESS cmd="set" data="external_tls_port=5081"/>
+  <X-PRE-PROCESS cmd="set" data="external_sip_port=7080"/>
+  <X-PRE-PROCESS cmd="set" data="external_tls_port=7081"/>
 
   <X-PRE-PROCESS cmd="set" data="rtp_range_start=16384"/>
   <X-PRE-PROCESS cmd="set" data="rtp_range_end=32768"/>
