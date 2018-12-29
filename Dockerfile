@@ -1,48 +1,42 @@
-FROM debian:stretch-slim as build
+FROM debian:stretch-slim
 
 MAINTAINER Alexey Koshkin <alexeyko@gmail.com>
 
-RUN export DEBIAN_FRONTEND=noninteractive
+# Add FreeSWITCH 1.8 repo & install dependencies
 
-# Install Dependencies
-RUN apt-get update && apt-get -y -qq install --quiet --no-install-recommends wget git curl ca-certificates pkg-config gnupg
-RUN wget --no-check-certificate -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add -
-RUN echo "deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" > /etc/apt/sources.list.d/freeswitch.list
-RUN apt-get update && apt-get -y -qq install --quiet --no-install-recommends automake autoconf libtool libtool-bin build-essential zlib1g-dev libjpeg-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev libpcre3-dev libspeex-dev libspeexdsp-dev libedit-dev libssl-dev yasm libopus-dev libsndfile-dev libshout3-dev libtiff5-dev libmpg123-dev libmp3lame-dev libvlc-dev libv8fs-6.1-dev uuid-dev
-RUN apt-get update
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get -y -qq install --quiet --no-install-recommends wget git curl apt-transport-https ca-certificates pkg-config gnupg \
+    && echo 'deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main' > /etc/apt/sources.list.d/freeswitch.list \
+    && wget --no-check-certificate -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add - \
+    && apt-get update -qq
 
-# Download FreeSWITCH
-WORKDIR /usr/local/src
-ENV GIT_SSL_NO_VERIFY=1
-RUN git clone https://freeswitch.org/stash/scm/fs/freeswitch.git -bv1.8.2 freeswitch
+RUN apt-get -y -qq install --quiet --no-install-recommends freeswitch \
+        freeswitch-mod-vlc \
+        freeswitch-mod-v8 \
+        freeswitch-mod-sofia \
+        freeswitch-mod-sndfile \
+        freeswitch-mod-shout \
+        freeswitch-mod-opus \
+        freeswitch-mod-native-file \
+        freeswitch-mod-loopback \
+        freeswitch-mod-http-cache \
+        freeswitch-mod-g723-1 \
+        freeswitch-mod-fail2ban \
+        freeswitch-mod-event-socket \
+        freeswitch-mod-dptools \
+        freeswitch-mod-console \
+        freeswitch-mod-commands \
+        freeswitch-mod-b64 \
+        freeswitch-mod-amr \
+        freeswitch-mod-amrwb \
+    && apt-get purge -qq -y --auto-remove git \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir /var/cache/freeswitch \
+    && chown -R freeswitch:freeswitch /var/cache/freeswitch \
+    && chown -R freeswitch:freeswitch /etc/freeswitch/
 
-# Bootstrap the build.
-WORKDIR freeswitch
-RUN ./bootstrap.sh -j
+# Copy the configuration files
+COPY ./build/conf/* /etc/freeswitch/
 
-# Enable the desired modules.
-COPY ./build/modules.conf /usr/local/src/freeswitch/modules.conf
+VOLUME ["/var/log/freeswitch/","/var/lib/freeswitch/recordings/","/etc/freeswitch/"]
 
-# Build FreeSWITCH.
-RUN ./configure
-RUN make
-RUN make install
-RUN make clean
-
-WORKDIR /usr/local/freeswitch
-
-RUN apt-get clean \
-&& rm -rf conf/* htdocs fonts grammar scripts images log/xml_cdr \
-&& rm -rf /tmp/*
-COPY ./build/conf/* conf/
-
-# This results in a single layer image
-FROM debian:stretch-slim
-COPY --from=build /usr/local/freeswitch /usr/local/freeswitch
-WORKDIR /usr/local/freeswitch
-RUN groupadd -r freeswitch && useradd -r -g freeswitch freeswitch
-RUN chown -R freeswitch:freeswitch /usr/local/freeswitch
-VOLUME ["/usr/local/freeswitch/log","/usr/local/freeswitch/recordings","/usr/local/freeswitch/conf"]
-ENV PATH="/usr/local/freeswitch/bin:${PATH}"
-
-CMD ["freeswitch", "-u", "freeswitch", "-g", "freeswitch", "-nonat"]
+CMD ["/usr/bin/freeswitch", "-c", "-u", "freeswitch", "-g", "freeswitch", "-nonat"]
