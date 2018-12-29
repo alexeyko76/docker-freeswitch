@@ -35,7 +35,7 @@ RUN apt-get -y -qq install --quiet --no-install-recommends freeswitch \
     && chown -R freeswitch:freeswitch /etc/freeswitch/
 
 # Copy the configuration files
-COPY ./build/conf/* /etc/freeswitch/
+COPY ./conf/* /etc/freeswitch/
 
 VOLUME ["/var/log/freeswitch/","/var/lib/freeswitch/recordings/","/etc/freeswitch/"]
 
