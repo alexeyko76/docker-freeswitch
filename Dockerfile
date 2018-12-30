@@ -7,9 +7,8 @@ MAINTAINER Alexey Koshkin <alexeyko@gmail.com>
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get -y -qq install --quiet --no-install-recommends wget git curl apt-transport-https ca-certificates pkg-config gnupg \
     && echo 'deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main' > /etc/apt/sources.list.d/freeswitch.list \
     && wget --no-check-certificate -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add - \
-    && apt-get update -qq
-
-RUN apt-get -y -qq install --quiet --no-install-recommends freeswitch \
+    && apt-get update -qq \
+    && apt-get -y -qq install --quiet --no-install-recommends freeswitch \
         freeswitch-mod-vlc \
         freeswitch-mod-v8 \
         freeswitch-mod-sofia \
@@ -31,8 +30,7 @@ RUN apt-get -y -qq install --quiet --no-install-recommends freeswitch \
     && apt-get purge -qq -y --auto-remove git \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /var/cache/freeswitch \
-    && chown -R freeswitch:freeswitch /var/cache/freeswitch \
-    && chown -R freeswitch:freeswitch /etc/freeswitch/
+    && chown -R freeswitch:freeswitch /var/cache/freeswitch /etc/freeswitch/ /var/lib/freeswitch/ 
 
 # Copy the configuration files
 COPY ./conf/* /etc/freeswitch/
