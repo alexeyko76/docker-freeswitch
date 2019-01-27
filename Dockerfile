@@ -30,11 +30,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get -y -q
     && apt-get purge -qq -y --auto-remove git \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /var/cache/freeswitch \
-    && chown -R freeswitch:freeswitch /var/cache/freeswitch /etc/freeswitch/ /var/lib/freeswitch/ 
+    && chown -R freeswitch:freeswitch /var/{cache,lib,run}/freeswitch /etc/freeswitch/
 
 # Copy the configuration files
 COPY ./conf/* /etc/freeswitch/
 
 VOLUME ["/var/log/freeswitch/","/var/lib/freeswitch/recordings/","/etc/freeswitch/"]
+
+# Healthcheck to make sure the service is running
+SHELL ["/bin/bash"]
+HEALTHCHECK --interval=60s --timeout=15s CMD /usr/bin/fs_cli -x status | grep -q ^UP || exit 1
 
 CMD ["/usr/bin/freeswitch", "-c", "-u", "freeswitch", "-g", "freeswitch", "-nonat"]
