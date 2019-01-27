@@ -30,7 +30,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get -y -q
     && apt-get purge -qq -y --auto-remove git \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /var/cache/freeswitch \
-    && chown -R freeswitch:freeswitch /var/{cache,lib}/freeswitch /etc/freeswitch/
+    && chown -R freeswitch:freeswitch /var/lib/freeswitch /var/cache/freeswitch /etc/freeswitch/
 
 # Copy the configuration files
 COPY ./conf/* /etc/
