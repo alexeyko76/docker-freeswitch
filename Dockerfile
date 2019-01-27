@@ -35,7 +35,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get -y -q
 # Copy the configuration files
 COPY ./conf/* /etc/
 
-VOLUME ["/var/log/freeswitch/","/var/lib/freeswitch/recordings/","/etc/freeswitch/"]
+VOLUME ["/var/log/freeswitch/","/var/lib/freeswitch/recordings/","/etc/"]
 
 # Healthcheck to make sure the service is running
 SHELL ["/bin/bash"]
