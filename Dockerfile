@@ -33,7 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get -y -q
     && chown -R freeswitch:freeswitch /var/{cache,lib,run}/freeswitch /etc/freeswitch/
 
 # Copy the configuration files
-COPY ./conf/* /etc/freeswitch/
+COPY ./conf/* /etc/
 
 VOLUME ["/var/log/freeswitch/","/var/lib/freeswitch/recordings/","/etc/freeswitch/"]
 
